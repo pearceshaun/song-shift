@@ -32,7 +32,7 @@ Spec: `tasks/loops/playlist-migration/specs/spec.md`
 
 ### Phase 6: Migration Engine
 
-- [ ] **6.1** Create `song_shift/migrator.py` — PlaylistMigrator + MigrationReport per spec. Write `tests/test_migrator.py` with all 7 test cases from spec. Run `uv run pytest tests/test_migrator.py` — all pass.
+- [x] **6.1** Create `song_shift/migrator.py` — PlaylistMigrator + MigrationReport per spec. Write `tests/test_migrator.py` with all 7 test cases from spec. Run `uv run pytest tests/test_migrator.py` — all pass.
 
 ### Phase 7: CLI
 
