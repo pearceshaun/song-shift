@@ -36,7 +36,7 @@ Spec: `tasks/loops/playlist-migration/specs/spec.md`
 
 ### Phase 7: CLI
 
-- [ ] **7.1** Create `song_shift/cli.py` — Click CLI group with `auth` and `list` commands per spec. Update `song_shift/providers/__init__.py` to register all providers on import. Verify `uv run python -m song_shift --help` shows commands.
+- [x] **7.1** Create `song_shift/cli.py` — Click CLI group with `auth` and `list` commands per spec. Update `song_shift/providers/__init__.py` to register all providers on import. Verify `uv run python -m song_shift --help` shows commands.
 - [ ] **7.2** Add `migrate` command to `song_shift/cli.py` — with `--playlist-id`, `--playlist-name`, and `--dry-run` options per spec. Write `tests/test_cli.py` with all 7 test cases from spec using Click's CliRunner. Run `uv run pytest tests/test_cli.py` — all pass.
 
 ### Phase 8: Integration & Verification
