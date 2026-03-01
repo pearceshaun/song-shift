@@ -23,8 +23,8 @@ Spec: `tasks/loops/playlist-migration/specs/spec.md`
 
 ### Phase 4: Apple Music Provider
 
-- [ ] **4.1** Create `song_shift/providers/apple_music.py` — AppleMusicProvider implementing MusicProvider. JWT developer token generation, all API methods per spec with pagination support. Register with provider registry.
-- [ ] **4.2** Write `tests/providers/test_apple_music.py` — all 11 test cases from spec. Mock httpx responses. Run `uv run pytest tests/providers/test_apple_music.py` — all pass.
+- [x] **4.1** Create `song_shift/providers/apple_music.py` — AppleMusicProvider implementing MusicProvider. JWT developer token generation, all API methods per spec with pagination support. Register with provider registry.
+- [x] **4.2** Write `tests/providers/test_apple_music.py` — all 11 test cases from spec. Mock httpx responses. Run `uv run pytest tests/providers/test_apple_music.py` — all pass.
 
 ### Phase 5: Track Matching
 
