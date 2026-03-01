@@ -28,7 +28,7 @@ Spec: `tasks/loops/playlist-migration/specs/spec.md`
 
 ### Phase 5: Track Matching
 
-- [ ] **5.1** Create `song_shift/matcher.py` — TrackMatcher with ISRC primary + fuzzy fallback per spec. Write `tests/test_matcher.py` with all 7 test cases from spec. Run `uv run pytest tests/test_matcher.py` — all pass.
+- [x] **5.1** Create `song_shift/matcher.py` — TrackMatcher with ISRC primary + fuzzy fallback per spec. Write `tests/test_matcher.py` with all 7 test cases from spec. Run `uv run pytest tests/test_matcher.py` — all pass.
 
 ### Phase 6: Migration Engine
 
