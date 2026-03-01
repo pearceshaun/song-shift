@@ -18,8 +18,8 @@ Spec: `tasks/loops/playlist-migration/specs/spec.md`
 
 ### Phase 3: Tidal Provider
 
-- [ ] **3.1** Create `song_shift/providers/tidal.py` — TidalProvider implementing MusicProvider. All methods per spec: authenticate (OAuth device code), is_authenticated, list_playlists, get_playlist_tracks, search_track, search_track_by_isrc, create_playlist, add_tracks_to_playlist. Register with provider registry.
-- [ ] **3.2** Write `tests/providers/test_tidal.py` — all 10 test cases from spec. Mock `tidalapi.Session` and related objects. Run `uv run pytest tests/providers/test_tidal.py` — all pass.
+- [x] **3.1** Create `song_shift/providers/tidal.py` — TidalProvider implementing MusicProvider. All methods per spec: authenticate (OAuth device code), is_authenticated, list_playlists, get_playlist_tracks, search_track, search_track_by_isrc, create_playlist, add_tracks_to_playlist. Register with provider registry.
+- [x] **3.2** Write `tests/providers/test_tidal.py` — all 10 test cases from spec. Mock `tidalapi.Session` and related objects. Run `uv run pytest tests/providers/test_tidal.py` — all pass.
 
 ### Phase 4: Apple Music Provider
 
