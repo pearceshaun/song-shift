@@ -9,7 +9,7 @@ Spec: `tasks/loops/playlist-migration/specs/spec.md`
 ### Phase 1: Project Scaffolding
 
 - [x] **1.1** Create project skeleton — `pyproject.toml` (with click, httpx, tidalapi, PyJWT, rapidfuzz, pytest, pytest-httpx dependencies), `.gitignore` (Python template), `.env.example`, and all `__init__.py` files for `song_shift/`, `song_shift/providers/`, `tests/`, `tests/providers/`. Add `song_shift/__main__.py`. Run `uv sync` to install dependencies.
-- [ ] **1.2** Create `song_shift/models.py` — Track, Playlist, MatchResult dataclasses per spec. Write `tests/test_models.py` with all 6 test cases from spec. Run `uv run pytest tests/test_models.py` — all pass.
+- [x] **1.2** Create `song_shift/models.py` — Track, Playlist, MatchResult dataclasses per spec. Write `tests/test_models.py` with all 6 test cases from spec. Run `uv run pytest tests/test_models.py` — all pass.
 
 ### Phase 2: Provider Foundation
 
