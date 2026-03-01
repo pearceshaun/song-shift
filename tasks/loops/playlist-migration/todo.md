@@ -14,7 +14,7 @@ Spec: `tasks/loops/playlist-migration/specs/spec.md`
 ### Phase 2: Provider Foundation
 
 - [x] **2.1** Create `song_shift/config.py` — CredentialStore class per spec. Write `tests/test_config.py` with all 6 test cases from spec (use tmp_path fixture for isolation). Run `uv run pytest tests/test_config.py` — all pass.
-- [ ] **2.2** Create `song_shift/providers/base.py` — MusicProvider ABC with all required abstract methods per spec. Add provider registry (register/get/list functions). Write `tests/test_provider_base.py` with all 4 test cases from spec. Run `uv run pytest tests/test_provider_base.py` — all pass.
+- [x] **2.2** Create `song_shift/providers/base.py` — MusicProvider ABC with all required abstract methods per spec. Add provider registry (register/get/list functions). Write `tests/test_provider_base.py` with all 4 test cases from spec. Run `uv run pytest tests/test_provider_base.py` — all pass.
 
 ### Phase 3: Tidal Provider
 
