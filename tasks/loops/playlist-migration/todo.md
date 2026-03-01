@@ -41,7 +41,7 @@ Spec: `tasks/loops/playlist-migration/specs/spec.md`
 
 ### Phase 8: Integration & Verification
 
-- [ ] **8.1** Create `tests/conftest.py` with shared fixtures (mock providers, sample tracks, sample playlists). Run `uv run pytest` (full suite) — all tests pass. Fix any regressions.
+- [x] **8.1** Create `tests/conftest.py` with shared fixtures (mock providers, sample tracks, sample playlists). Run `uv run pytest` (full suite) — all tests pass. Fix any regressions.
 - [ ] **8.2** Final verification — run full test suite, verify `song-shift --help`, `song-shift auth --help`, `song-shift list --help`, `song-shift migrate --help` all work. Verify test count matches spec expectations (~68 tests total).
 
 ## Commit Strategy

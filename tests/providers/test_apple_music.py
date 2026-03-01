@@ -11,7 +11,6 @@ from cryptography.hazmat.primitives.serialization import (
     PrivateFormat,
 )
 
-from song_shift.config import CredentialStore
 from song_shift.models import Playlist, Track
 from song_shift.providers.apple_music import (
     AppleMusicProvider,
@@ -68,12 +67,6 @@ def _make_playlist_response(
             "description": {"standard": description},
         },
     }
-
-
-@pytest.fixture
-def credential_store(tmp_path):
-    """Create a CredentialStore using a temp directory."""
-    return CredentialStore(config_dir=tmp_path)
 
 
 @pytest.fixture

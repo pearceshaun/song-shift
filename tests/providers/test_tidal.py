@@ -5,7 +5,6 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from song_shift.config import CredentialStore
 from song_shift.models import Playlist, Track
 from song_shift.providers.tidal import TidalProvider
 
@@ -42,12 +41,6 @@ def _make_mock_playlist(
     playlist.description = description
     playlist.num_tracks = num_tracks
     return playlist
-
-
-@pytest.fixture
-def credential_store(tmp_path):
-    """Create a CredentialStore using a temp directory."""
-    return CredentialStore(config_dir=tmp_path)
 
 
 @pytest.fixture
