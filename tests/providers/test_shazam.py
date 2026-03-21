@@ -1,6 +1,6 @@
 """Tests for ShazamProvider."""
 
-from unittest.mock import patch
+from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
@@ -161,3 +161,67 @@ class TestShazamCSVParsing:
         assert tracks[0].album == ""
         assert tracks[0].isrc is None
         assert tracks[0].duration_ms is None
+
+
+def _make_shazam_hit(title="Test Song", subtitle="Test Artist", key="12345"):
+    """Create a mock shazamio search hit dict."""
+    return {
+        "heading": {"title": title, "subtitle": subtitle},
+        "key": key,
+    }
+
+
+class TestShazamSearch:
+    def test_search_track_returns_mapped_results(self, provider):
+        """search_track() calls shazamio and maps results to Track objects."""
+        mock_result = {
+            "tracks": {
+                "hits": [
+                    _make_shazam_hit("Bohemian Rhapsody", "Queen", "456"),
+                    _make_shazam_hit("We Will Rock You", "Queen", "789"),
+                ]
+            }
+        }
+
+        mock_shazam = MagicMock()
+        mock_shazam.search_track = AsyncMock(return_value=mock_result)
+
+        with patch("song_shift.providers.shazam.Shazam", return_value=mock_shazam):
+            tracks = provider.search_track("Queen")
+
+        assert len(tracks) == 2
+        assert isinstance(tracks[0], Track)
+        assert tracks[0].title == "Bohemian Rhapsody"
+        assert tracks[0].artist == "Queen"
+        assert tracks[0].provider_id == "456"
+        assert tracks[0].provider == "shazam"
+        assert tracks[1].title == "We Will Rock You"
+        assert tracks[1].provider_id == "789"
+
+    def test_search_track_empty_results(self, provider):
+        """Returns empty list when no matches."""
+        mock_result = {"tracks": {"hits": []}}
+
+        mock_shazam = MagicMock()
+        mock_shazam.search_track = AsyncMock(return_value=mock_result)
+
+        with patch("song_shift.providers.shazam.Shazam", return_value=mock_shazam):
+            tracks = provider.search_track("nonexistent song xyz")
+
+        assert tracks == []
+
+    def test_search_track_by_isrc_returns_none(self, provider):
+        """Always returns None (not supported)."""
+        assert provider.search_track_by_isrc("USAT29900609") is None
+
+
+class TestShazamReadOnly:
+    def test_create_playlist_raises_not_implemented(self, provider):
+        """Raises NotImplementedError with descriptive message."""
+        with pytest.raises(NotImplementedError, match="read-only source"):
+            provider.create_playlist("My Playlist", "Description")
+
+    def test_add_tracks_raises_not_implemented(self, provider):
+        """Raises NotImplementedError with descriptive message."""
+        with pytest.raises(NotImplementedError, match="read-only source"):
+            provider.add_tracks_to_playlist("playlist-id", ["track1", "track2"])
