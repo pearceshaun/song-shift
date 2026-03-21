@@ -45,10 +45,10 @@ Spec: `tasks/loops/shazam-provider/specs/spec.md`
 
 ## Review Checklist
 
-- [ ] ShazamProvider registered and appears in `list_providers()`
-- [ ] CSV parsing handles edge cases (empty rows, missing columns)
-- [ ] Search delegates to shazamio correctly
-- [ ] Read-only methods raise NotImplementedError with clear message
-- [ ] All 16 test cases from spec are implemented and passing
-- [ ] Existing tests (tidal, apple_music, models, etc.) still pass
-- [ ] PR created targeting main
+- [x] ShazamProvider registered and appears in `list_providers()`
+- [x] CSV parsing handles edge cases (empty rows, missing columns)
+- [x] Search delegates to shazamio correctly
+- [x] Read-only methods raise NotImplementedError with clear message
+- [x] All 16 test cases from spec are implemented and passing
+- [x] Existing tests (tidal, apple_music, models, etc.) still pass
+- [x] PR created targeting main
