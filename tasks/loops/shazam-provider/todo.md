@@ -30,7 +30,7 @@ Spec: `tasks/loops/shazam-provider/specs/spec.md`
 
 ### Phase 5: Final Verification
 
-- [ ] **5.1** Run full test suite (`python -m pytest -v`). Verify all existing tests still pass. Verify Shazam provider is registered (can be checked by importing and calling `list_providers()`). Create PR targeting `main` using `gh pr create`. Commit and push any final fixes.
+- [x] **5.1** Run full test suite (`python -m pytest -v`). Verify all existing tests still pass. Verify Shazam provider is registered (can be checked by importing and calling `list_providers()`). Create PR targeting `main` using `gh pr create`. Commit and push any final fixes.
 
 ## Commit Strategy
 
