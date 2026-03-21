@@ -47,6 +47,7 @@ class ShazamProvider(MusicProvider):
         with open(path, newline="") as f:
             reader = csv.reader(f)
             try:
+                next(reader)  # skip "Shazam Library" metadata line
                 headers = set(next(reader))
             except StopIteration:
                 raise ValueError("CSV file is empty")
@@ -76,6 +77,7 @@ class ShazamProvider(MusicProvider):
         path = self._get_csv_path()
         tracks: list[Track] = []
         with open(path, newline="") as f:
+            next(f)  # skip "Shazam Library" metadata line
             reader = csv.DictReader(f)
             for row in reader:
                 title = row.get("Title", "").strip()

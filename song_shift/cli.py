@@ -116,7 +116,21 @@ def migrate(source: str, target: str, playlist_id: str, playlist_name: str | Non
 
     click.echo(f"Matching tracks on {target}...")
     migrator = PlaylistMigrator()
-    match_results = migrator.matcher.match_tracks(source_tracks, target_provider)
+    match_results = []
+    total = len(source_tracks)
+    for i, track in enumerate(source_tracks):
+        result = migrator.matcher.match_track(track, target_provider)
+        match_results.append(result)
+        if result.method == "none":
+            status = click.style("NO MATCH", fg="red")
+            click.echo(f"  [{i + 1}/{total}] {track.title} - {track.artist} ... {status}")
+        else:
+            matched_label = f"{result.matched_track.title} - {result.matched_track.artist}"
+            method = click.style(result.method.upper(), fg="cyan")
+            click.echo(
+                f"  [{i + 1}/{total}] {track.title} - {track.artist} "
+                f"... {method} -> {matched_label}"
+            )
 
     matched = [r for r in match_results if r.method != "none"]
     unmatched = [r for r in match_results if r.method == "none"]
