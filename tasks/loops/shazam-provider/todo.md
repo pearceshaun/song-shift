@@ -14,7 +14,7 @@ Spec: `tasks/loops/shazam-provider/specs/spec.md`
 
 - [x] **2.1** Implement `authenticate()` in `ShazamProvider`: accept a CSV file path (use `click.prompt` or `input()`), validate the file exists and has the required CSV headers (`Title`, `Artist`, `TrackKey`), store the path in `CredentialStore`. Implement `is_authenticated()`: check credentials exist AND file still exists on disk. Commit and push.
 
-- [ ] **2.2** Write tests for authentication in `tests/providers/test_shazam.py`: `TestShazamAuthentication` class with 6 test cases from the spec (test_authenticate_prompts_for_csv_path, test_authenticate_rejects_missing_file, test_authenticate_rejects_invalid_csv, test_is_authenticated_true_when_file_exists, test_is_authenticated_false_when_no_credentials, test_is_authenticated_false_when_file_deleted). Create helper to write temp CSV files. Run `python -m pytest` -- all pass. Commit and push.
+- [x] **2.2** Write tests for authentication in `tests/providers/test_shazam.py`: `TestShazamAuthentication` class with 6 test cases from the spec (test_authenticate_prompts_for_csv_path, test_authenticate_rejects_missing_file, test_authenticate_rejects_invalid_csv, test_is_authenticated_true_when_file_exists, test_is_authenticated_false_when_no_credentials, test_is_authenticated_false_when_file_deleted). Create helper to write temp CSV files. Run `python -m pytest` -- all pass. Commit and push.
 
 ### Phase 3: CSV Parsing (list_playlists + get_playlist_tracks)
 
