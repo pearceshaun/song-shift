@@ -9,6 +9,7 @@ dependencies = [
     "tidalapi>=0.7",
     "PyJWT[crypto]>=2.8",
     "rapidfuzz>=3.6",
+    "shazamio>=0.7",
 ]
 
 [project.scripts]
