@@ -24,7 +24,7 @@ Spec: `tasks/loops/shazam-provider/specs/spec.md`
 
 ### Phase 4: Search via shazamio
 
-- [ ] **4.1** Implement `search_track()`: use `asyncio.run(Shazam().search_track(query, limit=5))`, map results to `Track` objects. Implement `search_track_by_isrc()`: return `None` (not supported). Ensure `create_playlist()` and `add_tracks_to_playlist()` raise `NotImplementedError` with message "Shazam is a read-only source and does not support playlist creation". Commit and push.
+- [x] **4.1** Implement `search_track()`: use `asyncio.run(Shazam().search_track(query, limit=5))`, map results to `Track` objects. Implement `search_track_by_isrc()`: return `None` (not supported). Ensure `create_playlist()` and `add_tracks_to_playlist()` raise `NotImplementedError` with message "Shazam is a read-only source and does not support playlist creation". Commit and push.
 
 - [ ] **4.2** Write tests for search and read-only methods in `tests/providers/test_shazam.py`: `TestShazamSearch` class (test_search_track_returns_mapped_results, test_search_track_empty_results, test_search_track_by_isrc_returns_none) and `TestShazamReadOnly` class (test_create_playlist_raises_not_implemented, test_add_tracks_raises_not_implemented). Mock `shazamio.Shazam` for search tests. Run `python -m pytest` -- all pass. Commit and push.
 

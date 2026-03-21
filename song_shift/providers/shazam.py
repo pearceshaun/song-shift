@@ -1,13 +1,30 @@
 """Shazam music service provider using CSV import and shazamio for search."""
 
+import asyncio
 import csv
 from pathlib import Path
+
+from shazamio import Shazam
 
 from song_shift.config import CredentialStore
 from song_shift.models import Playlist, Track
 from song_shift.providers.base import MusicProvider, register_provider
 
 _REQUIRED_HEADERS = {"Title", "Artist", "TrackKey"}
+
+
+def _map_search_hit(hit: dict) -> Track:
+    """Map a shazamio search hit to a Track model."""
+    heading = hit.get("heading", {})
+    return Track(
+        title=heading.get("title", ""),
+        artist=heading.get("subtitle", ""),
+        album="",
+        provider_id=hit.get("key", ""),
+        provider="shazam",
+        isrc=None,
+        duration_ms=None,
+    )
 
 
 @register_provider
@@ -96,16 +113,23 @@ class ShazamProvider(MusicProvider):
 
     def search_track(self, query: str) -> list[Track]:
         """Search using shazamio."""
-        raise NotImplementedError
+        shazam = Shazam()
+        result = asyncio.run(shazam.search_track(query=query, limit=5))
+        hits = result.get("tracks", {}).get("hits", [])
+        return [_map_search_hit(hit) for hit in hits]
 
     def search_track_by_isrc(self, isrc: str) -> Track | None:
         """Not supported by Shazam."""
-        raise NotImplementedError
+        return None
 
     def create_playlist(self, name: str, description: str) -> Playlist:
         """Not supported -- Shazam is read-only."""
-        raise NotImplementedError
+        raise NotImplementedError(
+            "Shazam is a read-only source and does not support playlist creation"
+        )
 
     def add_tracks_to_playlist(self, playlist_id: str, track_ids: list[str]) -> int:
         """Not supported -- Shazam is read-only."""
-        raise NotImplementedError
+        raise NotImplementedError(
+            "Shazam is a read-only source and does not support playlist creation"
+        )
