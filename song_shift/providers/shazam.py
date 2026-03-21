@@ -47,13 +47,52 @@ class ShazamProvider(MusicProvider):
             return False
         return Path(creds["csv_path"]).is_file()
 
+    def _get_csv_path(self) -> Path:
+        """Return the stored CSV path, raising if not authenticated."""
+        creds = self._credential_store.get("shazam")
+        if not creds:
+            raise RuntimeError("Not authenticated -- call authenticate() first")
+        return Path(creds["csv_path"])
+
+    def _parse_csv(self) -> list[Track]:
+        """Parse the CSV file and return Track objects, skipping empty rows."""
+        path = self._get_csv_path()
+        tracks: list[Track] = []
+        with open(path, newline="") as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                title = row.get("Title", "").strip()
+                artist = row.get("Artist", "").strip()
+                if not title and not artist:
+                    continue
+                tracks.append(
+                    Track(
+                        title=title,
+                        artist=artist,
+                        album="",
+                        provider_id=row.get("TrackKey", "").strip(),
+                        provider="shazam",
+                        isrc=None,
+                        duration_ms=None,
+                    )
+                )
+        return tracks
+
     def list_playlists(self) -> list[Playlist]:
         """Return a single synthetic playlist from the CSV file."""
-        raise NotImplementedError
+        tracks = self._parse_csv()
+        return [
+            Playlist(
+                id="shazam-library",
+                name="My Shazam Tracks",
+                track_count=len(tracks),
+                provider="shazam",
+            )
+        ]
 
     def get_playlist_tracks(self, playlist_id: str) -> list[Track]:
         """Parse CSV and return Track objects."""
-        raise NotImplementedError
+        return self._parse_csv()
 
     def search_track(self, query: str) -> list[Track]:
         """Search using shazamio."""
