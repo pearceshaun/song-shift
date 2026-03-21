@@ -20,7 +20,7 @@ Spec: `tasks/loops/shazam-provider/specs/spec.md`
 
 - [x] **3.1** Implement `list_playlists()`: read CSV file, count rows, return single `Playlist(id="shazam-library", name="My Shazam Tracks", track_count=N, provider="shazam")`. Implement `get_playlist_tracks()`: parse CSV, map rows to `Track` objects (title from `Title`, artist from `Artist`, provider_id from `TrackKey`, provider="shazam", album="", isrc=None, duration_ms=None). Skip rows where Title AND Artist are both empty. Commit and push.
 
-- [ ] **3.2** Write tests for CSV parsing in `tests/providers/test_shazam.py`: `TestShazamCSVParsing` class with 5 test cases from spec (test_list_playlists_returns_single_synthetic_playlist, test_get_playlist_tracks_parses_csv, test_get_playlist_tracks_skips_empty_rows, test_get_playlist_tracks_handles_missing_fields, test_get_playlist_tracks_sets_provider_fields). Run `python -m pytest` -- all pass. Commit and push.
+- [x] **3.2** Write tests for CSV parsing in `tests/providers/test_shazam.py`: `TestShazamCSVParsing` class with 5 test cases from spec (test_list_playlists_returns_single_synthetic_playlist, test_get_playlist_tracks_parses_csv, test_get_playlist_tracks_skips_empty_rows, test_get_playlist_tracks_handles_missing_fields, test_get_playlist_tracks_sets_provider_fields). Run `python -m pytest` -- all pass. Commit and push.
 
 ### Phase 4: Search via shazamio
 
