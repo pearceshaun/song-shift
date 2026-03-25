@@ -70,7 +70,6 @@ class TestTrackMatcher:
         result = matcher.match_track(source, provider)
 
         provider.search_track_by_isrc.assert_called_once_with("GBAYE0000001")
-        provider.search_track.assert_called_once_with("Yesterday The Beatles")
         assert result.is_matched
         assert result.matched_track == target
         assert result.method == "fuzzy"
@@ -122,9 +121,41 @@ class TestTrackMatcher:
         result = matcher.match_track(source, provider)
 
         provider.search_track_by_isrc.assert_not_called()
-        provider.search_track.assert_called_once_with("Let It Be The Beatles")
         assert result.is_matched
         assert result.method == "fuzzy"
+
+    def test_wrong_artist_rejected_with_weighted_scoring(self):
+        """A candidate with matching title but wrong artist scores below threshold."""
+        matcher = TrackMatcher()
+        source = _make_track(title="Paper Boats", artist="Hania Rani", isrc=None)
+        wrong_artist = _make_target_track(title="Paper Boats", artist="Zac")
+
+        provider = MagicMock()
+        provider.search_track.return_value = [wrong_artist]
+
+        result = matcher.match_track(source, provider)
+
+        assert not result.is_matched
+        assert result.method == "none"
+
+    def test_fallback_query_finds_match(self):
+        """When first query misses, title-only query finds the right track."""
+        matcher = TrackMatcher()
+        source = _make_track(title="Bella", artist="Hania Rani", isrc=None)
+        target = _make_target_track(title="Bella", artist="Hania Rani")
+
+        provider = MagicMock()
+        # First query "Bella Hania Rani" returns nothing,
+        # second "Hania Rani Bella" returns nothing,
+        # third "Bella" returns the match
+        provider.search_track.side_effect = [[], [], [target]]
+
+        result = matcher.match_track(source, provider)
+
+        assert result.is_matched
+        assert result.matched_track == target
+        assert result.method == "fuzzy"
+        assert provider.search_track.call_count == 3
 
     def test_match_tracks_processes_all(self):
         """match_tracks returns a MatchResult for every input track."""
