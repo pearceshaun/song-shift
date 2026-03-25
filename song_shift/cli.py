@@ -94,9 +94,9 @@ def _resolve_provider(name: str):
 @click.argument("source")
 @click.argument("target")
 @click.option("--playlist-id", required=True, help="ID of the playlist to migrate.")
-@click.option("--playlist-name", default=None, help="Custom name for the created playlist.")
+@click.option("--playlist-name", required=True, help="Name for the created playlist.")
 @click.option("--dry-run", is_flag=True, help="Show match results without creating the playlist.")
-def migrate(source: str, target: str, playlist_id: str, playlist_name: str | None, dry_run: bool):
+def migrate(source: str, target: str, playlist_id: str, playlist_name: str, dry_run: bool):
     """Migrate a playlist between music services."""
     source_provider = _resolve_provider(source)
     target_provider = _resolve_provider(target)
@@ -104,15 +104,6 @@ def migrate(source: str, target: str, playlist_id: str, playlist_name: str | Non
     click.echo(f"Fetching tracks from {source}...")
     source_tracks = source_provider.get_playlist_tracks(playlist_id)
     click.echo(f"Found {len(source_tracks)} tracks.")
-
-    # Resolve playlist name from source if not provided
-    if playlist_name is None:
-        for pl in source_provider.list_playlists():
-            if pl.id == playlist_id:
-                playlist_name = pl.name
-                break
-        else:
-            playlist_name = "Migrated Playlist"
 
     click.echo(f"Matching tracks on {target}...")
     migrator = PlaylistMigrator()
