@@ -10,6 +10,7 @@ dependencies = [
     "PyJWT[crypto]>=2.8",
     "rapidfuzz>=3.6",
     "shazamio>=0.7",
+    "yt-dlp>=2024.0",
 ]
 
 [project.scripts]
