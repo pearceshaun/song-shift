@@ -8,8 +8,8 @@ from song_shift.models import MatchResult, Track
 from song_shift.providers.base import MusicProvider
 
 FUZZY_THRESHOLD = 80
-TITLE_WEIGHT = 0.6
-ARTIST_WEIGHT = 0.4
+TITLE_WEIGHT = 0.7
+ARTIST_WEIGHT = 0.3
 
 
 def _score_candidate(source: Track, candidate: Track) -> float:
