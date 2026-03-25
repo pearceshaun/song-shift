@@ -22,11 +22,20 @@ def _make_info(
     title="Test Video",
     chapters=None,
     description="",
+    uploader="",
+    artist="",
+    channel="",
 ):
     """Build a yt-dlp info dict for testing."""
     info = {"title": title, "description": description}
     if chapters is not None:
         info["chapters"] = chapters
+    if uploader:
+        info["uploader"] = uploader
+    if artist:
+        info["artist"] = artist
+    if channel:
+        info["channel"] = channel
     return info
 
 
@@ -125,8 +134,27 @@ class TestYouTubeChapterParsing:
         assert tracks[0].artist == "Daft Punk"
         assert tracks[0].title == "Around the World"
 
-    def test_get_tracks_no_separator_uses_raw_title(self, provider):
-        """Chapter titles with no delimiter set artist='' and title=full string."""
+    def test_get_tracks_no_separator_uses_fallback_artist(self, provider):
+        """Chapter titles with no delimiter use the video uploader as artist."""
+        chapters = [
+            {"title": "Bella", "start_time": 0, "end_time": 210},
+        ]
+        info = _make_info(chapters=chapters, uploader="Hania Rani")
+
+        with patch("song_shift.providers.youtube.yt_dlp") as mock_yt_dlp:
+            mock_ydl = MagicMock()
+            mock_ydl.extract_info.return_value = info
+            mock_ydl.__enter__ = MagicMock(return_value=mock_ydl)
+            mock_ydl.__exit__ = MagicMock(return_value=False)
+            mock_yt_dlp.YoutubeDL.return_value = mock_ydl
+
+            tracks = provider.get_playlist_tracks("https://youtu.be/test")
+
+        assert tracks[0].artist == "Hania Rani"
+        assert tracks[0].title == "Bella"
+
+    def test_get_tracks_no_separator_no_uploader(self, provider):
+        """Chapter titles with no delimiter and no uploader set artist=''."""
         chapters = [
             {"title": "SomeTrackWithNoDelimiter", "start_time": 0, "end_time": 210},
         ]
@@ -143,6 +171,25 @@ class TestYouTubeChapterParsing:
 
         assert tracks[0].artist == ""
         assert tracks[0].title == "SomeTrackWithNoDelimiter"
+
+    def test_explicit_artist_not_overridden_by_fallback(self, provider):
+        """When chapter has 'Artist - Title', uploader doesn't override it."""
+        chapters = [
+            {"title": "Justice - Genesis", "start_time": 0, "end_time": 210},
+        ]
+        info = _make_info(chapters=chapters, uploader="SomeChannel")
+
+        with patch("song_shift.providers.youtube.yt_dlp") as mock_yt_dlp:
+            mock_ydl = MagicMock()
+            mock_ydl.extract_info.return_value = info
+            mock_ydl.__enter__ = MagicMock(return_value=mock_ydl)
+            mock_ydl.__exit__ = MagicMock(return_value=False)
+            mock_yt_dlp.YoutubeDL.return_value = mock_ydl
+
+            tracks = provider.get_playlist_tracks("https://youtu.be/test")
+
+        assert tracks[0].artist == "Justice"
+        assert tracks[0].title == "Genesis"
 
 
 class TestYouTubeDescriptionFallback:

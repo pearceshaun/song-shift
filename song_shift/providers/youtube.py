@@ -88,14 +88,26 @@ class YouTubeProvider(MusicProvider):
         return self._extract_tracks(info)
 
     def _extract_tracks(self, info: dict) -> list[Track]:
-        """Extract Track objects from yt-dlp info dict."""
+        """Extract Track objects from yt-dlp info dict.
+
+        Uses the video uploader/channel name as a fallback artist when
+        chapter titles don't contain an artist delimiter.
+        """
+        fallback_artist = (
+            info.get("artist")
+            or info.get("uploader")
+            or info.get("channel")
+            or ""
+        )
         chapters = info.get("chapters") or []
         if chapters:
-            return self._tracks_from_chapters(chapters)
+            return self._tracks_from_chapters(chapters, fallback_artist)
         description = info.get("description") or ""
-        return self._tracks_from_description(description)
+        return self._tracks_from_description(description, fallback_artist)
 
-    def _tracks_from_chapters(self, chapters: list[dict]) -> list[Track]:
+    def _tracks_from_chapters(
+        self, chapters: list[dict], fallback_artist: str = ""
+    ) -> list[Track]:
         """Convert chapter entries to Track objects."""
         tracks = []
         for chapter in chapters:
@@ -104,6 +116,8 @@ class YouTubeProvider(MusicProvider):
             end = chapter.get("end_time", 0)
             duration_ms = int((end - start) * 1000) if end > start else None
             artist, title = _parse_chapter_title(raw_title)
+            if not artist:
+                artist = fallback_artist
             tracks.append(
                 Track(
                     title=title,
@@ -117,13 +131,15 @@ class YouTubeProvider(MusicProvider):
             )
         return tracks
 
-    def _tracks_from_description(self, description: str) -> list[Track]:
+    def _tracks_from_description(
+        self, description: str, fallback_artist: str = ""
+    ) -> list[Track]:
         """Parse description timestamps into Track objects."""
         parsed = _parse_description_timestamps(description)
         return [
             Track(
                 title=title,
-                artist=artist,
+                artist=artist or fallback_artist,
                 album="",
                 provider_id=f"{artist} - {title}" if artist else title,
                 provider="youtube",
